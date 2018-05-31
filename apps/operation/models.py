@@ -1,9 +1,11 @@
 """todo"""
-
-from django.db import models
 from datetime import datetime
 
-from ../users import Course,UserProfile
+from django.db import models
+
+from course.models import Course
+from users.models import UserProfile
+
 # Create your models here.
 
 

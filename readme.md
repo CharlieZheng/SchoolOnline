@@ -22,3 +22,16 @@ collation-server=utf8_general_ci
 
 再次查看字符集
 ```show variables like '%char%';```
+
+
+#### 迁移到数据库
+
+ - 创建Model
+```python manage.py makemigrations```
+
+ - 创建表
+```python manage.py migrate```
+
+#### 运行
+
+```python manage.py runserver```
