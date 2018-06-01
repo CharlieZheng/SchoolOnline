@@ -18,7 +18,7 @@ from django.urls import include, path, re_path
 from django.views.generic import TemplateView
 
 from users.views import ActiveUserView, ForgetPwdView, LoginView, ModifyPwdView,RegisterView,ResetView
-
+from organization.views import OrgView
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     re_path('active/(?P<active_code>.*)/',
@@ -31,4 +31,7 @@ urlpatterns = [
     re_path('reset/(?P<active_code>.*)/',
             ResetView.as_view(), name='reset_pwd'),
     path('xadmin/', xadmin.site.urls),
+
+    # 机构
+    path('org_list/',OrgView.as_view(),name = 'org_list'),
 ]
