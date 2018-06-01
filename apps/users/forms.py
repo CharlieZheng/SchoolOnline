@@ -16,7 +16,10 @@ class LoginForm(forms.Form):
 
     username = forms.CharField(required=True)
     password = forms.CharField(required=True, min_length=5)
-
+class ModifyPwdForm(forms.Form):
+    '''重置密码'''
+    password1 = forms.CharField(required=True, min_length=5)
+    password2 = forms.CharField(required=True, min_length=5)
 
 class RegisterForm(forms.Form):
     '''注册验证表单'''
