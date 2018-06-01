@@ -5,6 +5,12 @@ from captcha.fields import CaptchaField
 from django import forms
 
 
+class ForgetPwdForm(forms.Form):
+    '''忘记密码'''
+    email = forms.EmailField(required=True)
+    captcha = CaptchaField(error_messages={'invalid': '验证码错误'})
+
+
 class LoginForm(forms.Form):
     '''登录验证表单'''
 

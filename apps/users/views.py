@@ -10,8 +10,30 @@ from django.views.generic.base import View
 
 from utils.email_send import send_register_eamil
 
-from .forms import LoginForm, RegisterForm
+from .forms import ForgetPwdForm, LoginForm, RegisterForm
 from .models import EmailVerifyRecord, UserProfile
+
+# 激活用户的view
+
+
+class ActiveUserView(View):
+    def get(self, request, active_code):
+        # 查询邮箱验证记录是否存在
+        all_record = EmailVerifyRecord.objects.filter(code=active_code)
+
+        if all_record:
+            for record in all_record:
+                # 获取到对应的邮箱
+                email = record.email
+                # 查找到邮箱对应的user
+                user = UserProfile.objects.get(email=email)
+                user.is_active = True
+                user.save()
+                # 激活成功跳转到登录页面
+                return render(request, "login.html", )
+        # 自己瞎输的验证码
+        else:
+            return render(request, "register.html", {"msg": "您的激活链接无效"})
 
 
 # 邮箱和用户名都可以登录
@@ -29,6 +51,23 @@ class CustomBackend(ModelBackend):
                 return user
         except Exception as e:
             return None
+
+
+class ForgetPwdView(View):
+    '''找回密码'''
+
+    def get(self, request):
+        forget_form = ForgetPwdForm()
+        return render(request, 'forgetpwd.html', {'forget_form': forget_form})
+
+    def post(self, request):
+        forget_form = ForgetPwdForm(request.POST)
+        if forget_form.is_valid():
+            email = request.POST.get('email', None)
+            send_register_eamil(email, 'forget')
+            return render(request, 'send_success.html')
+        else:
+            return render(request, 'forgetpwd.html', {'forget_form': forget_form})
 
 
 class LoginView(View):
@@ -61,27 +100,6 @@ class LoginView(View):
         # form.is_valid（）已经判断不合法了，所以这里不需要再返回错误信息到前端了
         else:
             return render(request, 'login.html', {'login_form': login_form})
-
-
-# 激活用户的view
-class ActiveUserView(View):
-    def get(self, request, active_code):
-        # 查询邮箱验证记录是否存在
-        all_record = EmailVerifyRecord.objects.filter(code=active_code)
-
-        if all_record:
-            for record in all_record:
-                # 获取到对应的邮箱
-                email = record.email
-                # 查找到邮箱对应的user
-                user = UserProfile.objects.get(email=email)
-                user.is_active = True
-                user.save()
-                # 激活成功跳转到登录页面
-                return render(request, "login.html", )
-        # 自己瞎输的验证码
-        else:
-            return render(request, "register.html", {"msg": "您的激活链接无效"})
 
 
 class RegisterView(View):
