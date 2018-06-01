@@ -16,10 +16,17 @@ Including another URLconf
 import xadmin
 from django.urls import include, path, re_path
 from django.views.generic import TemplateView
+from django.views.static import serve
 
-from users.views import ActiveUserView, ForgetPwdView, LoginView, ModifyPwdView,RegisterView,ResetView
 from organization.views import OrgView
+from SchoolOnline.settings import MEDIA_ROOT
+from users.views import (ActiveUserView, ForgetPwdView, LoginView,
+                         ModifyPwdView, RegisterView, ResetView)
+
 urlpatterns = [
+    # 公共
+    # 处理图片显示的url,使用Django自带serve,传入参数告诉它去哪个路径找，我们有配置好的路径MEDIAROOT
+    re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     re_path('active/(?P<active_code>.*)/',
             ActiveUserView.as_view(), name='user_active'),
@@ -33,5 +40,5 @@ urlpatterns = [
     path('xadmin/', xadmin.site.urls),
 
     # 机构
-    path('org_list/',OrgView.as_view(),name = 'org_list'),
+    path('org_list/', OrgView.as_view(), name='org_list'),
 ]
