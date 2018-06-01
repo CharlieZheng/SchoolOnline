@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'xadmin',
     'crispy_forms',
     'captcha',  # sudo pip install django-simple-captcha
+    'pure_pagination',
 ]
 # 设置上传文件的路径
 MEDIA_URL = '/media/'
