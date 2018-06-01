@@ -63,3 +63,8 @@ class LoginView(View):
         # form.is_valid（）已经判断不合法了，所以这里不需要再返回错误信息到前端了
         else:
             return render(request, 'login.html', {'login_form': login_form})
+
+class RegisterView(View):
+    '''用户注册'''
+    def get(self,request):
+        return render(request,'register.html')
