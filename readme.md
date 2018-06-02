@@ -35,3 +35,5 @@ collation-server=utf8_general_ci
 #### 运行
 
 ```python manage.py runserver```
+
+只看到了第四篇文章，暂时不看了
