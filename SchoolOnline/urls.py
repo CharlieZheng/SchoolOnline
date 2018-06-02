@@ -18,7 +18,6 @@ from django.urls import include, path, re_path
 from django.views.generic import TemplateView
 from django.views.static import serve
 
-from organization.views import OrgView
 from SchoolOnline.settings import MEDIA_ROOT
 from users.views import (ActiveUserView, ForgetPwdView, LoginView,
                          ModifyPwdView, RegisterView, ResetView)
@@ -40,5 +39,6 @@ urlpatterns = [
     path('xadmin/', xadmin.site.urls),
 
     # 机构
-    path('org_list/', OrgView.as_view(), name='org_list'),
+    # path('org_list/', OrgView.as_view(), name='org_list'),
+    path("org/", include('organization.urls', namespace="org")),
 ]
